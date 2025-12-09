@@ -1,0 +1,13 @@
+    .navbar {
+        background-color: var(--dark-color) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    .salary-hero {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.25), rgba(30, 41, 59, 0.85)), 
+        url("/image/salary.jpg") center/cover;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
