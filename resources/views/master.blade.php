@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'KataAnakMagang')</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+
 
 <link rel="stylesheet" href="{{ asset('css/master.css') }}">
 @yield('styles')
@@ -36,27 +36,40 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url('/salaries') }}">Salaries</a></li>
             </ul>
 
-            <!-- Profile Icon Kalau udah login -->
-            <a href="{{ url('/profile') }}" class="text-white text-decoration-none">
-                <i class="bi bi-person-circle profile-icon me-3"></i>
-            </a>
+            <!-- AUTHENTICATED USER -->
+            @auth
+                <div class="d-flex align-items-center gap-3">
 
-            <!-- Kalau belum login tampilin cuma sign in dan register ini -->
-            <div class="d-flex gap-2">
-                <a href="{{ url('/login') }}" class="btn btn-signin">
-                    <i class="bi bi-box-arrow-in-right"></i> Sign In
-                </a>
-                <a href="{{ url('/register') }}" class="btn btn-register">
-                    <i class="bi bi-person-plus"></i> Register Today
-                </a>
-            </div>
+                    <a href="{{ url('/profile') }}"
+                    class="text-white text-decoration-none">
+                        <i class="bi bi-person-circle profile-icon"></i>
+                    </a>
 
-            
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
 
+                </div>
+            @endauth
+
+            <!-- GUEST (NOT LOGGED IN) -->
+            @guest
+                <div class="d-flex gap-2">
+                    <a href="{{ route('login') }}" class="btn btn-signin">
+                        <i class="bi bi-box-arrow-in-right"></i> Sign In
+                    </a>
+                    <a href="{{ route('register') }}" class="btn btn-register">
+                        <i class="bi bi-person-plus"></i> Register Today
+                    </a>
+                </div>
+            @endguest
         </div>
     </div>
 </nav>
-    
+
 <main>
     @yield('content')
 </main>
@@ -67,11 +80,11 @@
         navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
 </script>
-    
+
 <footer class="footer mt-5 py-5 text-white">
     <div class="container">
         <div class="row">
-            
+
             <div class="col-md-3 mb-4">
             <img src="{{ asset('image/logo2.png') }}" alt="Logo" height="45">
                 <p class="small text-light mt-2">By Interns, For Interns</p>
@@ -116,10 +129,10 @@
         </div>
     </div>
 </footer>
-  
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     @yield('scripts')
 </body>
 </html>

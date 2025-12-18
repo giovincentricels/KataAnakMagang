@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Company Detail')
+@section('title', $company->name)
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
@@ -16,24 +16,20 @@
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <div class="bg-light rounded p-2" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                                    <img src="" alt="Company Logo" class="img-fluid rounded">
-                                    {{-- <img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="img-fluid rounded"> --}}
+                                    <img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="img-fluid rounded">
                                 </div>
                             </div>
                             <div class="col">
                                 <h2 class="fw-bold mb-2">
-                                    {{-- {{ $company->name }} --}}
-                                    Apple Developer Academy
+                                    {{ $company->name }}
                                 </h2>
                                 <p class="text-muted mb-1">
                                     <i class="bi bi-briefcase me-2"></i>
-                                    {{-- {{ $company->industry }} --}}
-                                    Software & IT
+                                    {{ $company->industry }}
                                 </p>
                                 <p class="text-muted mb-0">
                                     <i class="bi bi-geo-alt me-2"></i>
-                                    {{-- {{ $company->location }} --}}
-                                    Jakarta, Indonesia
+                                    {{ $company->location }}
                                 </p>
                             </div>
                             <div class="col-auto text-end">
@@ -46,8 +42,7 @@
                                         <i class="bi bi-star"></i>
                                     </div>
                                     <p class="text-muted mb-0 small">
-                                        {{-- {{ $company->reviews_count }} --}}
-                                        125 reviews
+                                        {{ $company->reviews_count }} reviews
                                     </p>
                                 </div>
                                 <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addReviewModal">
@@ -58,90 +53,69 @@
                     </div>
                 </div>
 
-                <!-- Overview Card -->
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-body">
                         <h4 class="fw-bold mb-3">About This Company</h4>
                         <p class="text-muted">
-                            {{-- {{ $company->description }} --}}
-                            Tech Startup Indonesia is a leading technology company focused on delivering innovative software solutions. 
-                            We specialize in web and mobile application development, cloud computing, and digital transformation services. 
-                            Our mission is to help businesses leverage technology to achieve their goals and stay competitive in the digital age.
+                            {{ $company->description }}
                         </p>
-                        
+
                         <div class="row mt-4">
                             <div class="col-md-6 mb-3">
                                 <strong class="d-block text-dark mb-1">
                                     <i class="bi bi-people text-primary me-2"></i> Company Size
                                 </strong>
-                                <span class="text-muted">50-100 employees</span>
+                                <span class="text-muted">{{ $company->size }}</span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <strong class="d-block text-dark mb-1">
                                     <i class="bi bi-globe text-primary me-2"></i> Website
                                 </strong>
-                                <a href="#" class="text-primary text-decoration-none">www.apple.com</a>
+                                <a href="#" class="text-primary text-decoration-none">{{ $company->website }}</a>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <strong class="d-block text-dark mb-1">
                                     <i class="bi bi-envelope text-primary me-2"></i> Email
                                 </strong>
-                                <span class="text-muted">careers@apple.id</span>
+                                <span class="text-muted">{{$company->email}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Reviews Section -->
+
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <h4 class="fw-bold mb-4">Internship Reviews</h4>
-                        
-                        {{-- FOREACH REVIEWS DIMULAI DI SINI --}}
-                        {{-- @foreach($reviews as $review) --}}
-                        
+
+                        @forelse($company->reviews as $review)
+
                         <div class="border-bottom pb-4 mb-4">
                             <div class="d-flex align-items-start mb-3">
                                 <div class="me-3">
                                     <div class="bg-primary rounded-circle text-white fw-bold" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
-                                        {{-- {{ strtoupper(substr($review->user->name, 0, 2)) }} --}}
-                                        JD
+                                        {{ $review->is_anonymous ? 'AN' : strtoupper(substr($review->user->name,0,2)) }}
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
                                     <h6 class="fw-bold mb-1">
-                                        {{-- {{ $review->user->name }} --}}
-                                        John Doe
+                                        {{ $review->is_anonymous ? 'Anonymous' : $review->user->name }}
                                     </h6>
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="text-warning me-2">
-                                            {{-- @for($i = 1; $i <= 5; $i++)
-                                                @if($i <= $review->rating)
-                                                    <i class="bi bi-star-fill"></i>
-                                                @else
-                                                    <i class="bi bi-star"></i>
-                                                @endif
-                                            @endfor --}}
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star"></i>
+                                            @for($i=1;$i<=5;$i++)
+                                                <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                            @endfor
                                         </div>
                                         <small class="text-muted">
-                                            {{-- {{ $review->created_at->diffForHumans() }} --}}
-                                            2 weeks ago
+                                            {{ $review->created_at->diffForHumans() }}
                                         </small>
                                     </div>
                                     <div class="mb-2">
-                                        <span class="badge bg-light text-dark me-2">Software Engineer Intern</span>
-                                        <span class="badge bg-light text-dark">3 months</span>
+                                        <span class="badge bg-light text-dark me-2">{{ $review->position }}</span>
+                                        <span class="badge bg-light text-dark">{{ $review->duration }}</span>
                                     </div>
                                     <p class="text-muted mb-0">
-                                        {{-- {{ $review->content }} --}}
-                                        Great learning experience! The team was very supportive and I got to work on real projects. 
-                                        The work environment is collaborative and they provide good mentorship. Highly recommended for students 
-                                        who want hands-on experience in software development.
+                                        {{ $review->content }}
                                     </p>
                                 </div>
                                                             <div class="dropdown">
@@ -151,13 +125,11 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="#">
-                                            {{-- href="{{ route('communities.edit', $post->id) }}" --}}
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
                                     </li>
                                     <li>
                                         <button class="dropdown-item text-danger" onclick="confirmDelete()">
-                                            {{-- onclick="confirmDelete({{ $post->id }})" --}}
                                             <i class="bi bi-trash"></i> Delete
                                         </button>
                                     </li>
@@ -166,9 +138,10 @@
                             </div>
 
                         </div>
-                        
-                        {{-- @endforeach --}}
-                        {{-- FOREACH REVIEWS BERAKHIR DI SINI --}}
+
+                        @empty
+                            <p class="text-muted">No reviews yet.</p>
+                        @endforelse
                     </div>
                 </div>
 
@@ -190,10 +163,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body px-4">
-                <form action="#" method="POST">
-                    {{-- action="{{ route('reviews.store', $company->id) }}" --}}
+                <form method="POST" action="{{ route('reviews.store', $company) }}">
                     @csrf
-                    
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Overall Rating <span class="text-danger">*</span></label>
                         <div class="d-flex gap-2">
@@ -215,51 +186,52 @@
                         </div>
                         <input type="hidden" name="rating" id="ratingInput" required>
                     </div>
-                    
+
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Position <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="position" placeholder="e.g. Software Engineer Intern" required>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Duration</label>
                             <input type="text" class="form-control" name="duration" placeholder="e.g. 3 months">
                         </div>
                     </div>
-                    
+
                     <div class="mb-3 mt-3">
                         <label class="form-label fw-semibold">Your Review <span class="text-danger">*</span></label>
                         <textarea class="form-control" name="content" rows="5" placeholder="Share your internship experience..." required></textarea>
                     </div>
-                    
+
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" id="anonymous">
                         <label class="form-check-label" for="anonymous">
                             Post anonymously
                         </label>
                     </div>
-                    
+
                     <div class="d-flex gap-2 justify-content-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary px-4">
                             Submit Review
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
-@endsection
 
+@endsection
 @section('scripts')
 <script>
     document.querySelectorAll('.star-rating').forEach(button => {
         button.addEventListener('click', function() {
             const rating = this.dataset.rating;
             document.getElementById('ratingInput').value = rating;
-            
+
             document.querySelectorAll('.star-rating').forEach((btn, index) => {
                 if (index < rating) {
                     btn.classList.remove('btn-outline-warning');
