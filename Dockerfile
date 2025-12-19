@@ -8,12 +8,13 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libonig-dev \
     libxml2-dev \
-    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libsodium-dev \
     libpq-dev \
     default-mysql-client \
     default-libmysqlclient-dev \
-    libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg\
     && docker-php-ext-install pdo_pgsql pdo_mysql mbstring exif pnctl bcmath gd zip sodium
 
